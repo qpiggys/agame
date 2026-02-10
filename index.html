@@ -12,36 +12,33 @@
   <body class="d-flex justify-content-center align-items-center vh-100">
 
     <div class="container" style="max-width: 300px;">
-      
-      <!-- Display -->
-      <input
-        id="display"
-        type="text"
-        class="form-control mb-3 text-end"
-        readonly
-      >
 
-      <!-- Buttons -->
+      <div class="form-control mb-3 text-end">
+        <div id="previous" class="text-muted" style="font-size: 0.8rem;"></div>
+        <div id="display" style="font-size: 1.2rem;"></div>
+      </div>
+
       <div class="row g-2">
-        <div class="col-3"><button class="btn btn-secondary w-100" onclick="add('7')">7</button></div>
-        <div class="col-3"><button class="btn btn-secondary w-100" onclick="add('8')">8</button></div>
-        <div class="col-3"><button class="btn btn-secondary w-100" onclick="add('9')">9</button></div>
-        <div class="col-3"><button class="btn btn-warning w-100" onclick="add('/')">÷</button></div>
+        <div class="col-3"><button class="btn btn-secondary w-100" onclick="input('7')">7</button></div>
+        <div class="col-3"><button class="btn btn-secondary w-100" onclick="input('8')">8</button></div>
+        <div class="col-3"><button class="btn btn-secondary w-100" onclick="input('9')">9</button></div>
+        <div class="col-3"><button class="btn btn-warning w-100" onclick="operator('/')">÷</button></div>
 
-        <div class="col-3"><button class="btn btn-secondary w-100" onclick="add('4')">4</button></div>
-        <div class="col-3"><button class="btn btn-secondary w-100" onclick="add('5')">5</button></div>
-        <div class="col-3"><button class="btn btn-secondary w-100" onclick="add('6')">6</button></div>
-        <div class="col-3"><button class="btn btn-warning w-100" onclick="add('*')">×</button></div>
+        <div class="col-3"><button class="btn btn-secondary w-100" onclick="input('4')">4</button></div>
+        <div class="col-3"><button class="btn btn-secondary w-100" onclick="input('5')">5</button></div>
+        <div class="col-3"><button class="btn btn-secondary w-100" onclick="input('6')">6</button></div>
+        <div class="col-3"><button class="btn btn-warning w-100" onclick="operator('*')">×</button></div>
 
-        <div class="col-3"><button class="btn btn-secondary w-100" onclick="add('1')">1</button></div>
-        <div class="col-3"><button class="btn btn-secondary w-100" onclick="add('2')">2</button></div>
-        <div class="col-3"><button class="btn btn-secondary w-100" onclick="add('3')">3</button></div>
-        <div class="col-3"><button class="btn btn-warning w-100" onclick="add('-')">−</button></div>
+        <div class="col-3"><button class="btn btn-secondary w-100" onclick="input('1')">1</button></div>
+        <div class="col-3"><button class="btn btn-secondary w-100" onclick="input('2')">2</button></div>
+        <div class="col-3"><button class="btn btn-secondary w-100" onclick="input('3')">3</button></div>
+        <div class="col-3"><button class="btn btn-warning w-100" onclick="operator('-')">−</button></div>
 
-        <div class="col-3"><button class="btn btn-secondary w-100" onclick="add('0')">0</button></div>
-        <div class="col-3"><button class="btn btn-secondary w-100" onclick="add('.')">.</button></div>
-        <div class="col-3"><button class="btn btn-danger w-100" onclick="clearDisplay()">C</button></div>
-        <div class="col-3"><button class="btn btn-warning w-100" onclick="add('+')">+</button></div>
+        <!-- swapped . and 0 -->
+        <div class="col-3"><button class="btn btn-secondary w-100" onclick="input('.')">.</button></div>
+        <div class="col-3"><button class="btn btn-secondary w-100" onclick="input('0')">0</button></div>
+        <div class="col-3"><button class="btn btn-danger w-100" onclick="clearAll()">C</button></div>
+        <div class="col-3"><button class="btn btn-warning w-100" onclick="operator('+')">+</button></div>
 
         <div class="col-12">
           <button class="btn btn-success w-100" onclick="calculate()">=</button>
@@ -51,24 +48,47 @@
 
     <script>
       const display = document.getElementById("display");
+      const previous = document.getElementById("previous");
 
-      function add(value) {
-        display.value += value;
+      let justCalculated = false;
+      let ans = null;
+
+      function input(value) {
+        if (justCalculated) {
+          display.textContent = "";
+          justCalculated = false;
+        }
+        display.textContent += value;
       }
 
-      function clearDisplay() {
-        display.value = "";
+      function operator(op) {
+        if (justCalculated && ans !== null) {
+          display.textContent = ans + op;
+          justCalculated = false;
+        } else {
+          display.textContent += op;
+        }
       }
 
       function calculate() {
         try {
-          const result = eval(display.value);
+          const expression = display.textContent;
+          const result = eval(expression);
 
-          // Convert result to hexadecimal
-          display.value = Number(result).toString(16);
+          ans = result;
+          previous.textContent = "ANS = " + Number(result).toString(16);
+          display.textContent = Number(result).toString(16);
+          justCalculated = true;
         } catch {
-          display.value = "Error";
+          display.textContent = "Error";
         }
+      }
+
+      function clearAll() {
+        display.textContent = "";
+        previous.textContent = "";
+        ans = null;
+        justCalculated = false;
       }
     </script>
 
