@@ -11,7 +11,16 @@
 
   <body class="d-flex justify-content-center align-items-center vh-100">
 
-    <div class="container" style="max-width: 300px;">
+    <div class="container text-center" style="max-width: 300px;">
+
+      <div style="font-family: 'Comic Sans MS', 'Comic Sans', cursive; color: black;" class="mb-3">
+        <div style="font-size: 1.6rem; font-weight: bold;">
+          A Classic Calculator
+        </div>
+        <div style="font-size: 0.85rem;">
+          except you enter in decimal and it will only give you hex
+        </div>
+      </div>
 
       <div class="form-control mb-3 text-end">
         <div id="previous" class="text-muted" style="font-size: 0.8rem;"></div>
@@ -34,7 +43,6 @@
         <div class="col-3"><button class="btn btn-secondary w-100" onclick="input('3')">3</button></div>
         <div class="col-3"><button class="btn btn-warning w-100" onclick="operator('-')">−</button></div>
 
-        <!-- swapped . and 0 -->
         <div class="col-3"><button class="btn btn-secondary w-100" onclick="input('.')">.</button></div>
         <div class="col-3"><button class="btn btn-secondary w-100" onclick="input('0')">0</button></div>
         <div class="col-3"><button class="btn btn-danger w-100" onclick="clearAll()">C</button></div>
@@ -76,8 +84,9 @@
           const result = eval(expression);
 
           ans = result;
-          previous.textContent = "ANS = " + Number(result).toString(16);
-          display.textContent = Number(result).toString(16);
+          const hex = Number(result).toString(16);
+          previous.textContent = "ANS = " + hex;
+          display.textContent = hex;
           justCalculated = true;
         } catch {
           display.textContent = "Error";
